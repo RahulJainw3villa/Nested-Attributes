@@ -1,0 +1,61 @@
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<%= form_for @product do |form| %>
+  <% if product.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
+
+      <ul>
+        <% product.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :title %><br>
+    <%= form.text_field :title %>
+  </div>
+<br>
+  <div class="field">
+    <%= form.label :description %><br>
+    <%= form.text_field :description %>
+  </div>
+  <br>
+
+
+  <div class="field">
+  <%= form.fields_for :product_varients do |f| %>
+  <%= render 'product_varient_fields', f: f %>
+  <% end %>
+  <%= link_to_add_fields "Add Varient", form, :product_varients%>
+  </div>
+  
+
+
+
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+
+</div>
+</div>
+
+
+<script>
+ $('form').on('click', '.add_fields', function(event){
+  console.log("clicked");
+  var regexp, time;
+  time = new Date().getTime();
+  regexp = new RegExp($(this).data('id'),'g');
+  $(this).before($(this).data('fields').replace(regexp, time));
+  return event.preventDefault();
+
+})
+
+</script>
